@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jose Jimenez - Prueba Cocteles</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="plugins/toastr/toastr.min.css">
+  <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <link rel="stylesheet" href="plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+  <link rel="stylesheet" href="dist/css/adminlte.min.css">
+</head>
+<body class="hold-transition sidebar-mini">
+  <div class="wrapper">
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+      </ul>
+    </nav>
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+      <a href="index.html" class="brand-link">
+        <span class="brand-text font-weight-bold text-uppercase">Cocteles</span>
+      </a>
+      <div class="sidebar">
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+          <div class="image">
+            <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+          </div>
+          <div class="info">
+            <a href="#" class="d-block">User Name</a>
+          </div>
+        </div>
+        <div class="form-inline">
+          <div class="input-group" data-widget="sidebar-search">
+            <input class="form-control form-control-sidebar" type="search" placeholder="Buscar" aria-label="Search">
+            <div class="input-group-append">
+              <button class="btn btn-sidebar">
+                <i class="fas fa-search fa-fw"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <nav class="mt-2">
+          <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            <li class="nav-item">
+              <a href="index.html" class="nav-link active">
+                <i class="nav-icon far fa-circle"></i>
+                <p>
+                  Cocteles
+                </p>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </aside>
+    <div class="content-wrapper">
+      <section class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1>Cocteles</h1>
+            </div>
+            <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="#">Inicio</a></li>
+                <li class="breadcrumb-item active">Cocteles</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-header">
+                  <div class="row m-0">
+                    <input class="form-control col-12 col-sm-6 col-md-5 col-lg-3 col-xl-2" id="search-cocktail" placeholder="Buscar coctel por nombre">
+                    <button class="btn btn-sidebar col-auto" onclick="searchCocktailByName();">
+                      <i class="fas fa-search fa-fw"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <table id="cocktail-table" class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                      <th>Imagen</th>
+                      <th>Coctel</th>
+                      <th>Categoría</th>
+                      <th>Tipo alcohol</th>
+                      <th>Envase</th>
+                      <th class="text-center">Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tbody-cocktail-table">
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <div class="modal fade" id="cocktailModal" tabindex="-1" aria-labelledby="cocktailModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-body p-0">
+            <div class="card card-widget widget-user shadow-lg">
+              <div class="widget-user-header text-white">
+                <h3 class="widget-user-desc font-weight-bold" id="cocktail-name"></h3>
+              </div>
+              <div class="widget-user-image">
+                <img class="img-circle" id="img-cocktail" alt="User Avatar" style="height: 90px !important;">
+              </div>
+              <div class="card-footer">
+                <div class="row">
+                  <div class="col-sm-4 border-right">
+                    <div class="description-block">
+                      <h5 class="description-header">Tipo de alcohol</h5>
+                      <span class="description-text" id="strAlcoholic"></span>
+                    </div>
+                  </div>
+                  <div class="col-sm-4 border-right">
+                    <div class="description-block">
+                      <h5 class="description-header">Categoría</h5>
+                      <span class="description-text" id="strCategory"></span>
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="description-block">
+                      <h5 class="description-header">Envase</h5>
+                      <span class="description-text" id="strGlass"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 pl-4 pr-4">
+              <div class="card card-widget widget-user shadow-lg pl-4 pr-4 pt-3 pb-4">
+                <div class="font-weight-bold pb-3">Ingredientes</div>
+                <div class="accordion" id="cocktails-ingredients"></div>
+              </div>
+            </div>
+            <div class="col-12 pl-4 pr-4">
+              <div class="card card-widget widget-user shadow-lg pl-4 pr-4 pt-3 pb-4">
+                <div class="font-weight-bold pb-3">Instrucciones</div>
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                  <li class="nav-item" role="presentation">
+                    <button 
+                      class="nav-link language active" id="strInstructionsES-tab" data-toggle="tab"
+                      data-target="#strInstructionsES" type="button" role="tab"
+                      aria-controls="strInstructionsES" aria-selected="true"
+                      >
+                      Español
+                    </button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link language" id="strInstructions-tab" data-toggle="tab"
+                      data-target="#strInstructions" type="button" role="tab"
+                      aria-controls="strInstructions" aria-selected="false"
+                      >
+                      Inglés
+                  </button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button
+                      class="nav-link language" id="strInstructionsFR-tab" data-toggle="tab"
+                      data-target="#strInstructionsFR" type="button" role="tab"
+                      aria-controls="strInstructionsFR" aria-selected="false"
+                      >
+                      Frances
+                    </button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button
+                      class="nav-link language" id="strInstructionsIT-tab" data-toggle="tab"
+                      data-target="#strInstructionsIT" type="button" role="tab"
+                      aria-controls="strInstructionsIT" aria-selected="false"
+                      >
+                      Italiano
+                    </button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button
+                      class="nav-link language" id="strInstructionsDE-tab" data-toggle="tab"
+                      data-target="#strInstructionsDE" type="button" role="tab"
+                      aria-controls="strInstructionsDE" aria-selected="false"
+                      >
+                      Aleman
+                    </button>
+                  </li>
+                </ul>
+                <div class="tab-content pt-3" id="myTabContent">
+                  <div class="tab-pane fade show active" id="strInstructionsES" role="tabpanel" aria-labelledby="strInstructionsES-tab"></div>
+                  <div class="tab-pane fade" id="strInstructions" role="tabpanel" aria-labelledby="strInstructions-tab"></div>
+                  <div class="tab-pane fade" id="strInstructionsFR" role="tabpanel" aria-labelledby="strInstructionsFR-tab"></div>
+                  <div class="tab-pane fade" id="strInstructionsIT" role="tabpanel" aria-labelledby="strInstructionsIT-tab"></div>
+                  <div class="tab-pane fade" id="strInstructionsDE" role="tabpanel" aria-labelledby="strInstructionsDE-tab"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="main-footer">
+      <div class="float-right d-none d-sm-block">
+        <b>Version</b> 3.2.0
+      </div>
+      <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
+    </footer>
+    <aside class="control-sidebar control-sidebar-dark">
+    </aside>
+  </div>
+  <script src="plugins/jquery/jquery.min.js"></script>
+  <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="plugins/datatables/jquery.dataTables.min.js"></script>
+  <script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+  <script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+  <script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+  <script src="plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+  <script src="plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+  <script src="plugins/jszip/jszip.min.js"></script>
+  <script src="plugins/pdfmake/pdfmake.min.js"></script>
+  <script src="plugins/pdfmake/vfs_fonts.js"></script>
+  <script src="plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+  <script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
+  <script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+  <script src="plugins/sweetalert2/sweetalert2.min.js"></script>
+  <script src="plugins/toastr/toastr.min.js"></script>
+  <script src="dist/js/adminlte.min.js"></script>
+  <script>
+
+    const baseApi = 'https://www.thecocktaildb.com/api/json/v1/1/';
+
+    function getListAllCocktailsByFirstLetter() {
+        $.ajax({
+            type: 'GET',
+            url: baseApi + 'search.php?f=a',
+            success: function(data) {
+                for (let i = 0; i <data.drinks.length; i++) {
+                    $('#tbody-cocktail-table').append(`
+                        <tr>
+                            <td class="text-center"><img width="40" heigth="40" src="` + data.drinks[i].strDrinkThumb + `"></td>
+                            <td>` + data.drinks[i].strDrink + `</td>
+                            <td>` + data.drinks[i].strCategory + `</td>
+                            <td>` + data.drinks[i].strAlcoholic + `</td>
+                            <td>` + data.drinks[i].strGlass + `</td>
+                            <td class="text-center">
+                                <button type="button" class="btn btn-sm btn-primary" onclick="lookupFullCocktailDetailsById(` + data.drinks[i].idDrink + `)">
+                                    <i class="fas fa-plus fa-fw"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `);
+                }
+                $("#cocktail-table").DataTable({
+                    "responsive": true, "lengthChange": false, "autoWidth": false,
+                    "language" : {
+                        searchPlaceholder: "",
+                        search:         "Filtrar en la tabla",
+                        lengthMenu:     "_MENU_ ",
+                        info:           "Mostrando cocteles del _START_ al _END_ de un total de _TOTAL_ cocteles",
+                        infoEmpty:      "Mostrando cocteles del 0 al 0 de un total de 0 cocteles",
+                        infoFiltered:   "(filtrado de un total de _MAX_ cocteles)",
+                        infoPostFix:    "",
+                        loadingRecords: "Cargando...",
+                        zeroRecords:    "No se encontraron cocteles",
+                        emptyTable:     "Ningún coctel disponible en esta tabla",
+                        paginate: {
+                            first:      "Primer",
+                            previous:   "Anterior",
+                            next:       "Siguiénte",
+                            last:       "Último"
+                        },
+                        aria: {
+                            sortAscending:  ": Activar para ordenar la columna de manera ascendente",
+                            sortDescending: ": Activar para ordenar la columna de manera descendente"
+                        },
+                        buttons: {
+                            copyTitle: 'Copiado en el portapapeles',
+                            copyKeys: 'Presione <i>ctrl</i> ou <i>\u2318</i> + <i>C</i> para copiar los datos de la tabla a su portapapeles. <br><br>Para cancelar, haga clic en este mensaje o presione Esc.',
+                            copySuccess: {
+                                _: '%d lineas copiadas',
+                                1: '1 linea copiada'
+                            }
+                        }
+                    },
+                    "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+                }).buttons().container().appendTo('#cocktail-table_wrapper .col-md-6:eq(0)');
+            },
+            error: function(data){
+                console.log("error");
+            }
+        });
+    }
+
+    function lookupFullCocktailDetailsById(idDrink) {
+        $.ajax({
+            type: 'GET',
+            url: baseApi + 'lookup.php?i=' + idDrink,
+            success: function(data) {
+                showCocktail(data);
+            },
+            error: function(data){
+                console.log("error");
+            }
+        });
+    }
+
+    function searchCocktailByName() {
+      let cocktailName = $('#search-cocktail').val();
+      if (cocktailName != '') {
+        $.ajax({
+            type: 'GET',
+            url: baseApi + 'search.php?s=' + cocktailName,
+            success: function(data) {
+                if (data.drinks != null) {
+                  showCocktail(data);
+                } else {
+                  toastr.warning('No se encontró el coctel ' + cocktailName);
+                }
+            },
+            error: function(data){
+                console.log("error");
+            }
+        });
+      } else {
+        toastr.warning('Escribe el nombre del coctel');
+      }
+    }
+
+    function showCocktail(data) {
+      $('#cocktail-name').empty();
+      $('#cocktail-name').append(data.drinks[0].strDrink);
+      $('.widget-user-header').css('background', "url(" + data.drinks[0].strDrinkThumb + ") center center");
+      $('#img-cocktail').attr('src', data.drinks[0].strDrinkThumb);
+      $('#strAlcoholic').empty();
+      $('#strAlcoholic').append(data.drinks[0].strAlcoholic);
+      $('#strCategory').empty();
+      $('#strCategory').append(data.drinks[0].strCategory);
+      $('#strGlass').empty();
+      $('#strGlass').append(data.drinks[0].strGlass);
+      $('#strInstructionsES').empty();
+      $('#strInstructionsES').append(data.drinks[0].strInstructionsES);
+      $('#strInstructions').empty();
+      $('#strInstructions').append(data.drinks[0].strInstructions);
+      $('#strInstructionsFR').empty();
+      $('#strInstructionsFR').append(data.drinks[0].strInstructionsFR);
+      $('#strInstructionsIT').empty();
+      $('#strInstructionsIT').append(data.drinks[0].strInstructionsIT);
+      $('#strInstructionsDE').empty();
+      $('#strInstructionsDE').append(data.drinks[0].strInstructionsDE);
+      $('#cocktails-ingredients').empty();
+      for (let i = 1; i <= 15; i++) {
+          if (data.drinks[0]['strIngredient' + i] != null) {
+              $('#cocktails-ingredients').append(`
+                  <div class="card mb-0">
+                      <div class="card-header p-0" id="ingredient-` + i + `">
+                          <h2 class="mb-0">
+                              <button 
+                                  class="btn btn-block text-left collapsed" 
+                                  type="button" data-toggle="collapse" 
+                                  data-target="#content-ingredient-` + i + `" 
+                                  aria-expanded="false" 
+                                  aria-controls="content-ingredient-` + i + `"
+                                  onclick="searchByIngredientName('` + data.drinks[0]['strIngredient' + i] + `', ` + i + `);"
+                                  >
+                                  ` + data.drinks[0]['strIngredient' + i] + `
+                              </button>
+                          </h2>
+                      </div>
+                      <div id="content-ingredient-` + i + `" class="collapse" aria-labelledby="ingredient-` + i + `" data-parent="#cocktails-ingredients">
+                          <div class="card-body description-ingredient" id="description-ingredient-` + i + `"></div>
+                      </div>
+                  </div>
+              `);
+          }
+      }
+      $("#cocktailModal").modal("show");
+    }
+
+    function searchByIngredientName(ingredientName, i) {
+        $.ajax({
+            type: 'GET',
+            url: baseApi + 'search.php?i=' + ingredientName,
+            success: function(data) {
+                if (data.ingredients[0].strDescription == null) {
+                    data.ingredients[0].strDescription = 'Sin descripción';
+                }
+                $('#description-ingredient-' + i).empty();
+                $('#description-ingredient-' + i).append(data.ingredients[0].strDescription);
+            },
+            error: function(data){
+                console.log("error");
+            }
+        });
+    }
+
+    $(document).ready(function() {
+        getListAllCocktailsByFirstLetter();
+    });
+  </script>
+  <style type="text/css">
+      td {
+          vertical-align: middle !important;
+      }
+
+      .description-ingredient {
+          overflow: auto;
+          max-height: 150px;
+      }
+
+      .language {
+          font-size: 14px !important;
+      }
+
+      .toast-message {
+        color: black !important;
+      }
+  </style>
+</body>
+</html>
